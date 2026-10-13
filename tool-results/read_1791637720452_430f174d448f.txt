@@ -1,0 +1,966 @@
+     1→     1→# NEXUS COMPANIONS — MASTER BUILD & INTEGRATION PROMPT
+     2→     2→## Existing NEXUS Engine + Latest Dabi Upload + Shimeji Source Integration
+     3→     3→
+     4→     4→**Project:** NEXUS Companions  
+     5→     5→**Baseline:** The latest available `dabi-upload-shimeji-brain` project, including its current engine, UI, character packs, assets, tests, and native application work  
+     6→     6→**Additional source:** The provided Shimeji source-code ZIP  
+     7→     7→**Primary target:** A genuinely functional Windows desktop companion application  
+     8→     8→**Required outcome:** An improved, tested, complete, downloadable project ZIP containing the source code, assets, configuration, documentation, and all files required to build and run the application.
+     9→     9→
+    10→    10→---
+    11→    11→
+    12→    12→# 1. YOUR ROLE
+    13→    13→
+    14→    14→Act as the lead software architect, senior TypeScript/JavaScript engineer, desktop application engineer, animation and physics developer, UI/UX designer, integration engineer, and QA specialist responsible for advancing NEXUS Companions.
+    15→    15→
+    16→    16→You are not being asked to create a new generic desktop pet.
+    17→    17→
+    18→    18→You are not being asked to produce a UI mockup.
+    19→    19→
+    20→    20→You are not being asked to replace NEXUS with an unrelated implementation of Shimeji.
+    21→    21→
+    22→    22→You are being asked to take the existing NEXUS project, understand its current architecture, inspect the supplied Shimeji source code, combine the useful capabilities of both, repair incomplete functionality, and produce the next genuinely working version of NEXUS Companions.
+    23→    23→
+    24→    24→**The existing NEXUS project is the primary application. Shimeji is an additional source of implementation knowledge and compatible functionality.**
+    25→    25→
+    26→    26→The finished product should combine the reliability of a traditional desktop pet with the personality, contextual behavior, animation, interactions, character customization, and companion ecosystem that NEXUS is designed to provide.
+    27→    27→
+    28→    28→The guiding philosophy is:
+    29→    29→
+    30→    30→> **Your screen. Their world.**
+    31→    31→
+    32→    32→The result should feel like little anime characters genuinely inhabiting the user's computer, not animated pictures trapped inside a website.
+    33→    33→
+    34→    34→---
+    35→    35→
+    36→    36→# 2. THE TWO SOURCE PROJECTS
+    37→    37→
+    38→    38→You must inspect both supplied projects before deciding what to implement.
+    39→    39→
+    40→    40→## Source A — Latest NEXUS project
+    41→    41→
+    42→    42→Use the latest available version of `dabi-upload-shimeji-brain` as the authoritative baseline.
+    43→    43→
+    44→    44→Inspect the actual project directory and establish its current version from the files. Do not assume that the version number, documentation, previous reports, or a filename proves which features work.
+    45→    45→
+    46→    46→The NEXUS project already has substantial work invested in its architecture, companion behavior, rendering, animation, character packs, UI, and tests.
+    47→    47→
+    48→    48→Your first responsibility is to understand and preserve that work.
+    49→    49→
+    50→    50→## Source B — Shimeji source-code ZIP
+    51→    51→
+    52→    52→Extract and inspect the provided Shimeji source-code ZIP.
+    53→    53→
+    54→    54→Determine:
+    55→    55→
+    56→    56→- The original programming language and framework.
+    57→    57→- Its rendering and animation approach.
+    58→    58→- How character image sets are loaded.
+    59→    59→- How actions map to images or animation sequences.
+    60→    60→- How behaviors select and sequence actions.
+    61→    61→- How character movement and physics work.
+    62→    62→- How screen boundaries and desktop surfaces are handled.
+    63→    63→- How dragging and user interaction work.
+    64→    64→- How multiple pets are managed.
+    65→    65→- How configuration and character-specific behavior are represented.
+    66→    66→- Which features are reusable concepts and which depend on Shimeji's original runtime.
+    67→    67→- What the source license permits and what notices must be retained.
+    68→    68→
+    69→    69→Do not assume that the Shimeji source uses the same language, architecture, coordinate system, or asset conventions as NEXUS.
+    70→    70→
+    71→    71→Do not blindly copy source files into the NEXUS repository.
+    72→    72→
+    73→    73→Do not create two competing companion engines.
+    74→    74→
+    75→    75→Instead, identify the most valuable capabilities in Shimeji and integrate them through the existing NEXUS architecture.
+    76→    76→
+    77→    77→Where an existing NEXUS subsystem is already superior, retain it.
+    78→    78→
+    79→    79→Where Shimeji provides a useful missing capability, port or adapt it cleanly.
+    80→    80→
+    81→    81→Where a source implementation is incompatible, use its behavior as a reference and implement the equivalent functionality natively in NEXUS.
+    82→    82→
+    83→    83→---
+    84→    84→
+    85→    85→# 3. PHASE ZERO — AUDIT BEFORE CODING
+    86→    86→
+    87→    87→Do not begin by rewriting files.
+    88→    88→
+    89→    89→First inspect the complete repository and produce an evidence-based technical audit.
+    90→    90→
+    91→    91→Inspect at least:
+    92→    92→
+    93→    93→- `package.json` and available scripts.
+    94→    94→- The actual entry points and browser build pipeline.
+    95→    95→- The existing intent/action planner.
+    96→    96→- The finite-state machine.
+    97→    97→- Physics and movement systems.
+    98→    98→- Sprite loading and animation playback.
+    99→    99→- Character and asset registries.
+   100→   100→- Character-specific configuration.
+   101→   101→- Personality, mood, drives, conditions, and action selection.
+   102→   102→- Companion interaction and relationship systems.
+   103→   103→- Persistence and settings.
+   104→   104→- NEXUS Phone and character collection.
+   105→   105→- Original-character creator and runtime.
+   106→   106→- Dialogue and expression systems.
+   107→   107→- Native Tauri/Rust integration.
+   108→   108→- IPC and platform-specific commands.
+   109→   109→- Existing UI and styling.
+   110→   110→- Asset validation scripts.
+   111→   111→- Tests and build configuration.
+   112→   112→- Existing documentation and known issues.
+   113→   113→
+   114→   114→Classify each major subsystem as:
+   115→   115→
+   116→   116→**IMPLEMENTED:** Demonstrably works through the actual application.
+   117→   117→
+   118→   118→**PARTIAL:** Some functionality works, but important paths remain incomplete.
+   119→   119→
+   120→   120→**BROKEN:** Present but failing, inconsistent, or disconnected.
+   121→   121→
+   122→   122→**MOCKED:** A placeholder or simulated representation rather than the intended functionality.
+   123→   123→
+   124→   124→**NOT IMPLEMENTED:** Missing.
+   125→   125→
+   126→   126→**NOT VERIFIED:** Cannot be confirmed in the available environment.
+   127→   127→
+   128→   128→For each finding, include the relevant files, test results, or reproducible evidence.
+   129→   129→
+   130→   130→A function existing in the code is not sufficient proof that its feature works.
+   131→   131→
+   132→   132→A button existing in the UI is not proof that it performs its advertised action.
+   133→   133→
+   134→   134→A successful unit test is not proof that the complete desktop application works.
+   135→   135→
+   136→   136→### Required Phase Zero deliverables
+   137→   137→
+   138→   138→1. NEXUS architecture map.
+   139→   139→2. Shimeji architecture map.
+   140→   140→3. Feature and subsystem status matrix.
+   141→   141→4. Asset inventory and animation mapping report.
+   142→   142→5. Test and build baseline.
+   143→   143→6. Defect list ordered by severity.
+   144→   144→7. Integration plan identifying what to preserve, port, adapt, or reject.
+   145→   145→8. Proposed implementation sequence.
+   146→   146→
+   147→   147→After this audit, continue into implementation wherever the environment permits. Do not stop at a report if the requested task is to build the improved project.
+   148→   148→
+   149→   149→---
+   150→   150→
+   151→   151→# 4. WHAT NEXUS ALREADY IS
+   152→   152→
+   153→   153→Treat the following as the established project direction and previously documented implementation context. Verify the exact current state against the supplied source.
+   154→   154→
+   155→   155→NEXUS is a desktop companion system with an engine designed around autonomous, interactive characters.
+   156→   156→
+   157→   157→Its existing architecture includes or has been developed around:
+   158→   158→
+   159→   159→- Intent and action planning.
+   160→   160→- Drives, mood, and behavioral conditions.
+   161→   161→- An action and animation selection pipeline.
+   162→   162→- A finite-state machine.
+   163→   163→- Movement and physics.
+   164→   164→- Sprite animation.
+   165→   165→- Character-specific behavior.
+   166→   166→- Companion persistence.
+   167→   167→- Companion-to-companion interaction.
+   168→   168→- A NEXUS Phone/control interface.
+   169→   169→- Character collection and selection.
+   170→   170→- Original-character creation.
+   171→   171→- Dialogue and contextual reactions.
+   172→   172→- A Tauri/Rust native application layer.
+   173→   173→- Browser-based demonstration and development tooling.
+   174→   174→- Automated tests and asset-validation tooling.
+   175→   175→
+   176→   176→The core architecture should remain coherent.
+   177→   177→
+   178→   178→The intended action pipeline is:
+   179→   179→
+   180→   180→User, environment, or autonomous behavior
+   181→   181→→ Intent recognition
+   182→   182→→ Action planning
+   183→   183→→ Permission and condition checks
+   184→   184→→ Legal state transition
+   185→   185→→ Physics and movement
+   186→   186→→ Character-specific animation
+   187→   187→→ Expression and dialogue
+   188→   188→→ Result and state update.
+   189→   189→
+   190→   190→Autonomous behaviors should use the same action system as user commands wherever practical. Do not create separate, inconsistent implementations for the same action.
+   191→   191→
+   192→   192→The system must be capable of explaining why a behavior was selected, rejecting invalid actions safely, and recovering from interrupted or unavailable animations.
+   193→   193→
+   194→   194→---
+   195→   195→
+   196→   196→# 5. CURRENT CHARACTER AND ASSET BASELINE
+   197→   197→
+   198→   198→The latest documented NEXUS asset work includes these six character packs:
+   199→   199→
+   200→   200→- Dabi
+   201→   201→- Itachi
+   202→   202→- Kuro
+   203→   203→- Naruto
+   204→   204→- Nyx
+   205→   205→- Astra
+   206→   206→
+   207→   207→The previous audit reported that Dabi had 279 extracted and enhanced PNG frames organized across 20 animations.
+   208→   208→
+   209→   209→Treat those figures as an inventory starting point. Recount the actual files and inspect the actual animation definitions before relying on them.
+   210→   210→
+   211→   211→Do not assume that every animation has been correctly registered or is reachable from the engine.
+   212→   212→
+   213→   213→## Required asset audit
+   214→   214→
+   215→   215→For every character pack:
+   216→   216→
+   217→   217→1. Discover the pack automatically from the real asset directory.
+   218→   218→2. Identify all PNG files and animation sequences.
+   219→   219→3. Inspect image dimensions, transparency, frame naming, and file integrity.
+   220→   220→4. Determine which frames belong to which animations.
+   221→   221→5. Identify missing frames, duplicate frames, incompatible formats, and inconsistent naming.
+   222→   222→6. Identify animations that have assets but no engine mapping.
+   223→   223→7. Identify engine actions that have no corresponding animation.
+   224→   224→8. Validate facing direction and movement orientation.
+   225→   225→9. Validate animation timing, looping, and interruption behavior.
+   226→   226→10. Generate a readable report of all findings.
+   227→   227→
+   228→   228→Do not discard valid frames simply because their naming differs from the existing NEXUS conventions.
+   229→   229→
+   230→   230→Create a robust asset adapter where necessary.
+   231→   231→
+   232→   232→The project should support both its current animation conventions and compatible Shimeji-style image sets where practical.
+   233→   233→
+   234→   234→## Character registry
+   235→   235→
+   236→   236→Each character must have a reliable definition containing, as appropriate:
+   237→   237→
+   238→   238→- Stable character ID.
+   239→   239→- Display name.
+   240→   240→- Asset pack location.
+   241→   241→- Animation manifest.
+   242→   242→- Supported actions.
+   243→   243→- Default animation.
+   244→   244→- Personality parameters.
+   245→   245→- Behavioral preferences.
+   246→   246→- Expression definitions.
+   247→   247→- Movement parameters.
+   248→   248→- Interaction preferences.
+   249→   249→- Dialogue style.
+   250→   250→- Supported special effects.
+   251→   251→- Optional metadata and attribution.
+   252→   252→
+   253→   253→A character should not need to be manually hardcoded into multiple unrelated engine files to become usable.
+   254→   254→
+   255→   255→---
+   256→   256→
+   257→   257→# 6. INTEGRATING SHIMEJI PROPERLY
+   258→   258→
+   259→   259→This is a central part of the assignment.
+   260→   260→
+   261→   261→Traditional Shimeji systems commonly separate character image sets, action definitions, and behavior definitions. Use the supplied source to determine its exact implementation and identify which concepts can improve NEXUS.
+   262→   262→
+   263→   263→Do not assume that Shimeji's XML configuration can be loaded directly by the NEXUS engine. Build a parser or adapter only if it provides a concrete benefit and is compatible with the supplied source.
+   264→   264→
+   265→   265→## Required integration areas
+   266→   266→
+   267→   267→### A. Character image-set compatibility
+   268→   268→
+   269→   269→Develop a clean asset-discovery and normalization layer that can map compatible Shimeji-style image sets into NEXUS character definitions.
+   270→   270→
+   271→   271→Preserve the original asset files.
+   272→   272→
+   273→   273→Do not rename or transform source images destructively.
+   274→   274→
+   275→   275→If a pack requires normalization, create generated mappings or derived files and document the process.
+   276→   276→
+   277→   277→### B. Action compatibility
+   278→   278→
+   279→   279→Create a unified action registry that can represent:
+   280→   280→
+   281→   281→- Action ID.
+   282→   282→- Animation sequence.
+   283→   283→- Required conditions.
+   284→   284→- Duration and looping.
+   285→   285→- Movement or physics effects.
+   286→   286→- Interruptibility.
+   287→   287→- Completion behavior.
+   288→   288→- Supported characters.
+   289→   289→- Optional prerequisites and cooldowns.
+   290→   290→
+   291→   291→Existing NEXUS actions must continue working.
+   292→   292→
+   293→   293→Shimeji-derived actions should enter the same action pipeline instead of bypassing the NEXUS engine.
+   294→   294→
+   295→   295→### C. Behavior compatibility
+   296→   296→
+   297→   297→Adapt useful Shimeji behavior-selection and action-sequencing concepts into the existing NEXUS planner.
+   298→   298→
+   299→   299→Support contextual selection based on:
+   300→   300→
+   301→   301→- Current state.
+   302→   302→- Environment.
+   303→   303→- Character personality.
+   304→   304→- Mood and drives.
+   305→   305→- Recent actions.
+   306→   306→- User interaction.
+   307→   307→- Companion proximity.
+   308→   308→- Available animations.
+   309→   309→- Cooldowns and interruption rules.
+   310→   310→
+   311→   311→Avoid repetitive behavior loops, conflicting actions, and animations that remain stuck indefinitely.
+   312→   312→
+   313→   313→### D. Compatibility and fallback
+   314→   314→
+   315→   315→When a character lacks an optional animation, select a safe compatible fallback.
+   316→   316→
+   317→   317→Never leave the character invisible, frozen, or trapped in an invalid state merely because a specific animation is missing.
+   318→   318→
+   319→   319→Fallbacks must not conceal asset defects. Log the missing mapping and report it in the audit.
+   320→   320→
+   321→   321→### E. Licensing and attribution
+   322→   322→
+   323→   323→Inspect the actual license files in both source projects.
+   324→   324→
+   325→   325→Retain required copyright notices and attribution.
+   326→   326→
+   327→   327→Document which code and assets originate from which project.
+   328→   328→
+   329→   329→Do not import material whose license is incompatible with the intended distribution.
+   330→   330→
+   331→   331→Keep the NEXUS architecture independently understandable and maintainable.
+   332→   332→
+   333→   333→---
+   334→   334→
+   335→   335→# 7. FIX THE INTENT, ACTION, ANIMATION, AND PHYSICS PIPELINE
+   336→   336→
+   337→   337→The engine must reliably translate decisions into visible character behavior.
+   338→   338→
+   339→   339→The required pipeline is:
+   340→   340→
+   341→   341→Intent
+   342→   342→→ Action selection
+   343→   343→→ State validation
+   344→   344→→ Physics command
+   345→   345→→ Animation selection
+   346→   346→→ Animation playback
+   347→   347→→ Completion or interruption
+   348→   348→→ State reconciliation.
+   349→   349→
+   350→   350→Every stage must communicate with the next stage correctly.
+   351→   351→
+   352→   352→## Known issues to investigate
+   353→   353→
+   354→   354→Previous audits identified:
+   355→   355→
+   356→   356→- Dabi `sit` and `blue_flame` actions that were not fully mapped or verified.
+   357→   357→- Finite-state-machine warnings involving `JUMP → WALK`.
+   358→   358→- Possible differences between declared actions, available assets, and executable behaviors.
+   359→   359→- Native Windows overlay behavior that had not yet been conclusively verified in a real Windows build.
+   360→   360→
+   361→   361→These are investigation targets, not assumptions that the latest files still contain the same defects.
+   362→   362→
+   363→   363→Reproduce each issue before fixing it.
+   364→   364→
+   365→   365→### FSM requirements
+   366→   366→
+   367→   367→- Legal transitions must be explicitly represented.
+   368→   368→- Illegal transitions must be rejected safely.
+   369→   369→- Interrupted actions must not leave stale animation or movement state.
+   370→   370→- Landing and movement transitions must be consistent.
+   371→   371→- Jumping, falling, climbing, sitting, sleeping, and walking must not conflict.
+   372→   372→- Wildcard or emergency transitions must remain intentional and testable.
+   373→   373→- A refused transition must not silently mutate the character into an invalid state.
+   374→   374→
+   375→   375→Fix the underlying transition logic rather than suppressing warnings.
+   376→   376→
+   377→   377→### Dabi-specific requirements
+   378→   378→
+   379→   379→For Dabi:
+   380→   380→
+   381→   381→1. Audit all extracted frames.
+   382→   382→2. Build a verified animation manifest.
+   383→   383→3. Map every supported animation to its actual frame sequence.
+   384→   384→4. Confirm the sitting behavior is reachable and completes correctly.
+   385→   385→5. Confirm the blue-flame effect is represented correctly in the renderer and action pipeline.
+   386→   386→6. Ensure optional effects do not break movement or animation state.
+   387→   387→7. Test transitions into and out of each supported special action.
+   388→   388→
+   389→   389→Do not create a fake blue-flame animation if the required visual assets or effect implementation are absent. Implement a genuine effect when appropriate and report any missing assets honestly.
+   390→   390→
+   391→   391→Apply the same mapping discipline to every other character pack.
+   392→   392→
+   393→   393→---
+   394→   394→
+   395→   395→# 8. PHYSICS AND DESKTOP WORLD
+   396→   396→
+   397→   397→Use the supplied Shimeji implementation to identify proven approaches to desktop movement, collision, dragging, and environmental interaction.
+   398→   398→
+   399→   399→Adapt those approaches to the NEXUS world model.
+   400→   400→
+   401→   401→Required capabilities include:
+   402→   402→
+   403→   403→- Horizontal movement.
+   404→   404→- Jumping.
+   405→   405→- Falling.
+   406→   406→- Gravity.
+   407→   407→- Landing.
+   408→   408→- Screen-boundary handling.
+   409→   409→- Dragging.
+   410→   410→- Collision and surface detection.
+   411→   411→- Climbing where supported.
+   412→   412→- Safe repositioning.
+   413→   413→- Movement cancellation.
+   414→   414→- Multiple companion positions.
+   415→   415→- Correct handling of different display sizes and DPI scaling where supported.
+   416→   416→
+   417→   417→The engine must distinguish between:
+   418→   418→
+   419→   419→1. The simulated browser world.
+   420→   420→2. The actual operating-system desktop.
+   421→   421→
+   422→   422→The browser demo may simulate desktop movement, but it must never claim that it can freely interact with real Windows application windows.
+   423→   423→
+   424→   424→The native build must use the appropriate platform layer for real desktop integration.
+   425→   425→
+   426→   426→Where the supplied Shimeji source provides reliable behavior, reuse the underlying approach when licensing and architecture permit.
+   427→   427→
+   428→   428→Do not introduce two independent physics loops that fight over the same companion position.
+   429→   429→
+   430→   430→---
+   431→   431→
+   432→   432→# 9. NATIVE WINDOWS APPLICATION
+   433→   433→
+   434→   434→The primary objective is a working Windows desktop application, not merely a website that resembles a desktop.
+   435→   435→
+   436→   436→The existing NEXUS project has a Tauri/Rust native layer. Preserve and improve it rather than replacing it unnecessarily.
+   437→   437→
+   438→   438→## Target experience
+   439→   439→
+   440→   440→The user should be able to:
+   441→   441→
+   442→   442→- Launch NEXUS.
+   443→   443→- Have companions appear on the actual desktop.
+   444→   444→- Drag and interact with companions.
+   445→   445→- Let companions move autonomously.
+   446→   446→- Open the NEXUS Phone independently.
+   447→   447→- Close or hide the control interface without unintentionally terminating the companions.
+   448→   448→- Resume or dismiss companions using clear controls.
+   449→   449→- Exit the entire application intentionally.
+   450→   450→- Use a browser preview without requiring native Windows functionality.
+   451→   451→
+   452→   452→Where supported and appropriate, implement:
+   453→   453→
+   454→   454→- Transparent overlay.
+   455→   455→- Correct window layering.
+   456→   456→- Sensible focus behavior.
+   457→   457→- Click-through behavior outside interactive regions.
+   458→   458→- Input capture for interactive companions.
+   459→   459→- Desktop coordinate handling.
+   460→   460→- Taskbar and system-tray integration.
+   461→   461→- Multi-monitor awareness.
+   462→   462→- DPI scaling.
+   463→   463→- Graceful shutdown and restart.
+   464→   464→- Clear error reporting.
+   465→   465→
+   466→   466→The native application must not make the desktop unusable by capturing all clicks or permanently stealing focus.
+   467→   467→
+   468→   468→Do not assume that browser tests prove these features work.
+   469→   469→
+   470→   470→## Packaging
+   471→   471→
+   472→   472→Audit the current Tauri configuration and the actual frontend build pipeline before changing it.
+   473→   473→
+   474→   474→The project has previously used a browser build script that generates `dist/nexus-browser.js` and a root `index.html` entry point.
+   475→   475→
+   476→   476→Verify the current implementation.
+   477→   477→
+   478→   478→If the native packaging configuration incorrectly points to the entire repository, create or correct a dedicated frontend distribution directory containing the actual entry point, generated bundle, styles, and required assets.
+   479→   479→
+   480→   480→Do not move files arbitrarily or break the existing browser workflow.
+   481→   481→
+   482→   482→Ensure that the packaged application can locate its required assets at runtime.
+   483→   483→
+   484→   484→The final Windows installer must not depend on the development server being active.
+   485→   485→
+   486→   486→---
+   487→   487→
+   488→   488→# 10. NEXUS PHONE AND CHARACTER MANAGEMENT
+   489→   489→
+   490→   490→Preserve the existing NEXUS Phone, character collection, settings, and original-character creator.
+   491→   491→
+   492→   492→Audit each existing screen and connect its controls to real engine operations.
+   493→   493→
+   494→   494→The user should be able to manage active companions, inspect available characters, send commands, view dialogue, configure behavior, and access the supported settings.
+   495→   495→
+   496→   496→The intended design supports up to five active companions. Verify that the current engine actually enforces this limit consistently.
+   497→   497→
+   498→   498→Each companion must have independent:
+   499→   499→
+   500→   500→- Position.
+   501→   501→- Current state.
+   502→   502→- Animation.
+   503→   503→- Personality.
+   504→   504→- Mood.
+   505→   505→- Current action.
+   506→   506→- Interaction history where implemented.
+   507→   507→- Dialogue state.
+   508→   508→- Relevant persistent settings.
+   509→   509→
+   510→   510→Multiple active companions must not share mutable state accidentally.
+   511→   511→
+   512→   512→## Original-character support
+   513→   513→
+   514→   514→Preserve the existing OC creator and improve it where necessary.
+   515→   515→
+   516→   516→An original character should be able to use the same validated engine interfaces as built-in characters.
+   517→   517→
+   518→   518→Character creation must not require editing multiple source files manually.
+   519→   519→
+   520→   520→Validate custom character definitions and report missing assets or invalid configuration clearly.
+   521→   521→
+   522→   522→Do not allow malformed character packs to crash the whole application.
+   523→   523→
+   524→   524→---
+   525→   525→
+   526→   526→# 11. PERSONALITY, AUTONOMY, AND INTERACTIONS
+   527→   527→
+   528→   528→NEXUS should go beyond traditional Shimeji movement without losing the reliability of the original desktop-pet experience.
+   529→   529→
+   530→   530→Preserve and improve the existing systems for:
+   531→   531→
+   532→   532→- Intent planning.
+   533→   533→- Mood.
+   534→   534→- Drives.
+   535→   535→- Personality.
+   536→   536→- Environmental awareness.
+   537→   537→- Companion relationships.
+   538→   538→- Autonomous behavior.
+   539→   539→- Contextual dialogue.
+   540→   540→- User commands.
+   541→   541→- Reminders and reactions where already supported.
+   542→   542→
+   543→   543→Character behavior should emerge from the same engine rather than from unrelated random animation timers.
+   544→   544→
+   545→   545→For example, an autonomous behavior should select a valid action, verify the character's available animations, execute the associated physics and animation, and update its state when the action completes.
+   546→   546→
+   547→   547→Companions should be able to notice one another, approach one another, react, and perform supported interactions.
+   548→   548→
+   549→   549→Interactions should respect character compatibility, distance, action availability, and interruption rules.
+   550→   550→
+   551→   551→Avoid making every character behave identically.
+   552→   552→
+   553→   553→Character-specific behavior must be configurable rather than scattered through hardcoded conditional statements.
+   554→   554→
+   555→   555→---
+   556→   556→
+   557→   557→# 12. DIALOGUE AND EXPRESSIONS
+   558→   558→
+   559→   559→Preserve the existing text-based communication philosophy.
+   560→   560→
+   561→   561→NEXUS does not require official anime voice acting.
+   562→   562→
+   563→   563→Dialogue should be accompanied by appropriate character expressions, gestures, and manga-style speech bubbles where supported.
+   564→   564→
+   565→   565→The system should connect the NEXUS Phone conversation flow to the character's visible reaction.
+   566→   566→
+   567→   567→When a character receives a message, the relevant event should reach the same companion instance that controls its animation and dialogue.
+   568→   568→
+   569→   569→Avoid disconnected chat interfaces that merely display text without affecting the companion.
+   570→   570→
+   571→   571→If the current project includes AI-backed dialogue, audit its provider, context handling, failure behavior, and configuration before modifying it.
+   572→   572→
+   573→   573→Do not invent working AI functionality when a provider is unavailable.
+   574→   574→
+   575→   575→Provide a functional fallback where appropriate and distinguish local behavior from network-dependent capabilities.
+   576→   576→
+   577→   577→---
+   578→   578→
+   579→   579→# 13. VISUAL DESIGN
+   580→   580→
+   581→   581→Improve the actual application rather than producing a decorative mockup.
+   582→   582→
+   583→   583→NEXUS should feel like an elegant, atmospheric anime companion environment.
+   584→   584→
+   585→   585→Maintain a polished, ethereal, tech-forward aesthetic with a warm and inviting atmosphere.
+   586→   586→
+   587→   587→The design should include:
+   588→   588→
+   589→   589→- Clear visual hierarchy.
+   590→   590→- Thoughtful typography.
+   591→   591→- Restrained glow and lighting.
+   592→   592→- Consistent spacing.
+   593→   593→- Smooth transitions.
+   594→   594→- Responsive controls.
+   595→   595→- Distinct character identities.
+   596→   596→- Readable dialogue bubbles.
+   597→   597→- Useful empty states.
+   598→   598→- Clear loading and error states.
+   599→   599→- Accessible interaction targets.
+   600→   600→- A coherent NEXUS visual identity.
+   601→   601→
+   602→   602→The interface should feel like a companion world, not an ordinary administration dashboard.
+   603→   603→
+   604→   604→However, visual polish must never conceal incomplete functionality.
+   605→   605→
+   606→   606→Do not spend the majority of the development budget redesigning a panel while the underlying character engine remains broken.
+   607→   607→
+   608→   608→Prioritize engine reliability, visible behavior, and native integration before cosmetic refinements.
+   609→   609→
+   610→   610→---
+   611→   611→
+   612→   612→# 14. PERFORMANCE, RELIABILITY, AND PERSISTENCE
+   613→   613→
+   614→   614→The application must remain responsive with several companions active.
+   615→   615→
+   616→   616→Audit the update loop, animation scheduling, rendering, event subscriptions, and persistence.
+   617→   617→
+   618→   618→Prevent:
+   619→   619→
+   620→   620→- Duplicate update loops.
+   621→   621→- Unbounded timers.
+   622→   622→- Memory leaks.
+   623→   623→- Repeated event handlers.
+   624→   624→- Unnecessary animation work.
+   625→   625→- Excessive disk writes.
+   626→   626→- Stale asynchronous results.
+   627→   627→- Conflicting movement commands.
+   628→   628→- Character state corruption.
+   629→   629→- Crashes caused by a missing optional asset.
+   630→   630→
+   631→   631→Use the project's existing architecture where sound.
+   632→   632→
+   633→   633→Persistent data should include only the settings, character definitions, and state that are intended to survive restarts.
+   634→   634→
+   635→   635→Validate loaded data and handle corrupted or outdated saved state safely.
+   636→   636→
+   637→   637→Do not silently discard user-created characters or settings during upgrades.
+   638→   638→
+   639→   639→Where schema migrations are required, implement them deliberately and test them.
+   640→   640→
+   641→   641→---
+   642→   642→
+   643→   643→# 15. TESTING REQUIREMENTS
+   644→   644→
+   645→   645→Testing is mandatory.
+   646→   646→
+   647→   647→The previous development history includes multiple reported automated-test totals, including an audit reporting 215 passing tests. Other earlier project snapshots reported different totals.
+   648→   648→
+   649→   649→These are historical results only.
+   650→   650→
+   651→   651→**The current source must be tested again. Never assume that an older test count applies to the latest build.**
+   652→   652→
+   653→   653→Start by running the actual project's existing commands, including those available for:
+   654→   654→
+   655→   655→- `npm test`
+   656→   656→- `npm run validate:assets`
+   657→   657→- `npm run build:browser`
+   658→   658→- `npm run tauri dev`
+   659→   659→- `npm run tauri build`
+   660→   660→
+   661→   661→Check `package.json` and the actual environment before deciding which commands are available.
+   662→   662→
+   663→   663→Do not invent scripts that do not exist.
+   664→   664→
+   665→   665→If a command is unavailable, identify the correct existing equivalent or explain what must be added.
+   666→   666→
+   667→   667→## Required test categories
+   668→   668→
+   669→   669→### A. Engine tests
+   670→   670→
+   671→   671→Test:
+   672→   672→
+   673→   673→- Initial state.
+   674→   674→- Legal and illegal transitions.
+   675→   675→- Interrupts.
+   676→   676→- Action selection.
+   677→   677→- Animation completion.
+   678→   678→- Missing-animation fallback.
+   679→   679→- Physics transitions.
+   680→   680→- State reconciliation.
+   681→   681→- Persistence.
+   682→   682→- Multiple independent companions.
+   683→   683→
+   684→   684→### B. Asset tests
+   685→   685→
+   686→   686→Test:
+   687→   687→
+   688→   688→- Pack discovery.
+   689→   689→- Animation manifests.
+   690→   690→- Frame existence.
+   691→   691→- Invalid image files.
+   692→   692→- Missing mappings.
+   693→   693→- Duplicate IDs.
+   694→   694→- Character-specific special actions.
+   695→   695→- Fallback behavior.
+   696→   696→
+   697→   697→### C. Integration tests
+   698→   698→
+   699→   699→Verify the complete path:
+   700→   700→
+   701→   701→Intent → Action → FSM → Physics → Animation → Completion.
+   702→   702→
+   703→   703→Test both user-triggered actions and autonomous actions.
+   704→   704→
+   705→   705→### D. Shimeji compatibility tests
+   706→   706→
+   707→   707→Use representative assets and behavior definitions from the supplied source where permitted.
+   708→   708→
+   709→   709→Confirm that the adapter maps supported source concepts into actual NEXUS engine actions.
+   710→   710→
+   711→   711→Verify that invalid or unsupported definitions produce readable errors instead of crashing the application.
+   712→   712→
+   713→   713→### E. UI tests
+   714→   714→
+   715→   715→Test that visible controls perform their intended actions.
+   716→   716→
+   717→   717→Verify that the Phone, character selection, settings, and OC creator connect to the real engine.
+   718→   718→
+   719→   719→### F. Browser tests
+   720→   720→
+   721→   721→Build and launch the browser preview.
+   722→   722→
+   723→   723→Check startup, animation playback, dragging, character switching, Phone interactions, and error handling.
+   724→   724→
+   725→   725→### G. Native Windows tests
+   726→   726→
+   727→   727→Where a Windows environment is available, build and launch the native application.
+   728→   728→
+   729→   729→Test real overlay behavior, interaction with other windows, taskbar behavior, closing and reopening the Phone, companion persistence, and clean exit.
+   730→   730→
+   731→   731→If the current environment cannot run Windows-specific tests, clearly identify them as unverified and provide exact instructions for running them on Windows.
+   732→   732→
+   733→   733→Do not claim a successful native build merely because the TypeScript bundle compiled.
+   734→   734→
+   735→   735→---
+   736→   736→
+   737→   737→# 16. DEVELOPMENT ORDER
+   738→   738→
+   739→   739→Follow this sequence unless the audit reveals a critical issue that must be addressed earlier.
+   740→   740→
+   741→   741→## Phase 0 — Audit
+   742→   742→
+   743→   743→Inspect both source projects and record the real baseline.
+   744→   744→
+   745→   745→## Phase 1 — Stabilize the existing NEXUS engine
+   746→   746→
+   747→   747→Fix reproduced FSM warnings, invalid transitions, action-selection defects, animation-state problems, and persistence regressions.
+   748→   748→
+   749→   749→Do not add large new features while core behavior is unreliable.
+   750→   750→
+   751→   751→## Phase 2 — Complete the asset pipeline
+   752→   752→
+   753→   753→Create verified animation manifests for Dabi, Itachi, Kuro, Naruto, Nyx, and Astra.
+   754→   754→
+   755→   755→Fix missing mappings and improve automatic asset discovery.
+   756→   756→
+   757→   757→## Phase 3 — Integrate Shimeji capabilities
+   758→   758→
+   759→   759→Implement the compatible action, behavior, asset, and movement adapters identified during the audit.
+   760→   760→
+   761→   761→Preserve NEXUS's architecture and licensing requirements.
+   762→   762→
+   763→   763→## Phase 4 — Validate character behavior
+   764→   764→
+   765→   765→Make every supported character action reachable and ensure the animation and physics systems agree.
+   766→   766→
+   767→   767→Use Dabi's sitting and blue-flame behavior as explicit audit cases.
+   768→   768→
+   769→   769→## Phase 5 — Complete native desktop integration
+   770→   770→
+   771→   771→Correct the actual packaging pipeline and verify the Tauri/Rust layer on Windows where possible.
+   772→   772→
+   773→   773→## Phase 6 — Improve interactions and character runtime
+   774→   774→
+   775→   775→Strengthen multiple-companion independence, autonomous behavior, expressions, dialogue, and original-character compatibility.
+   776→   776→
+   777→   777→## Phase 7 — Polish the UI
+   778→   778→
+   779→   779→Improve the NEXUS Phone, character collection, settings, feedback, and visual consistency without breaking existing workflows.
+   780→   780→
+   781→   781→## Phase 8 — Final audit and packaging
+   782→   782→
+   783→   783→Run all feasible tests, build the application, inspect the resulting distribution, and create the complete project ZIP.
+   784→   784→
+   785→   785→Do not skip directly to visual polish or final packaging while earlier critical defects remain.
+   786→   786→
+   787→   787→---
+   788→   788→
+   789→   789→# 17. REQUIRED DELIVERABLES
+   790→   790→
+   791→   791→Produce a complete, downloadable ZIP of the improved NEXUS project.
+   792→   792→
+   793→   793→Do not provide only a patch, screenshots, code snippets, or a report.
+   794→   794→
+   795→   795→The ZIP must contain all source files required to continue developing the application.
+   796→   796→
+   797→   797→Include, as applicable to the actual architecture:
+   798→   798→
+   799→   799→- Root `index.html`.
+   800→   800→- `package.json` and lockfile.
+   801→   801→- Source code.
+   802→   802→- UI and styling.
+   803→   803→- NEXUS engine.
+   804→   804→- Physics and FSM.
+   805→   805→- Animation system.
+   806→   806→- Character registry.
+   807→   807→- All required character assets.
+   808→   808→- Asset manifests and validation scripts.
+   809→   809→- Shimeji integration code.
+   810→   810→- Tauri/Rust source.
+   811→   811→- Native configuration.
+   812→   812→- Browser build scripts.
+   813→   813→- Tests.
+   814→   814→- Documentation.
+   815→   815→- Environment example files.
+   816→   816→- License and attribution notices.
+   817→   817→- Setup instructions.
+   818→   818→- Build instructions.
+   819→   819→- Troubleshooting documentation.
+   820→   820→
+   821→   821→Include generated build output when it is necessary for the documented launch workflow.
+   822→   822→
+   823→   823→Do not include secrets, API keys, personal credentials, unnecessary caches, or massive temporary build directories.
+   824→   824→
+   825→   825→Ensure the ZIP preserves the correct project structure and contains every required runtime asset.
+   826→   826→
+   827→   827→## Required documentation
+   828→   828→
+   829→   829→Provide a comprehensive `README.md` and a `START-HERE.md` containing:
+   830→   830→
+   831→   831→1. What NEXUS is.
+   832→   832→2. What was preserved.
+   833→   833→3. What changed.
+   834→   834→4. What was added.
+   835→   835→5. How Shimeji functionality was integrated.
+   836→   836→6. How to install dependencies.
+   837→   837→7. How to run the browser demo.
+   838→   838→8. How to launch the native Windows development build.
+   839→   839→9. How to create a Windows release build.
+   840→   840→10. Where installers and build artifacts are generated.
+   841→   841→11. How to add a character pack.
+   842→   842→12. How to define and validate animations.
+   843→   843→13. How to run the tests.
+   844→   844→14. Known limitations.
+   845→   845→15. Platform-specific requirements.
+   846→   846→
+   847→   847→Provide the actual download link to the completed ZIP after creating and verifying it.
+   848→   848→
+   849→   849→---
+   850→   850→
+   851→   851→# 18. FINAL REPORT — EVIDENCE REQUIRED
+   852→   852→
+   853→   853→Alongside the ZIP, provide a concise but detailed engineering report.
+   854→   854→
+   855→   855→Use these sections:
+   856→   856→
+   857→   857→### IMPLEMENTED
+   858→   858→
+   859→   859→List functionality that is genuinely working.
+   860→   860→
+   861→   861→### REPAIRED
+   862→   862→
+   863→   863→List the defects fixed and the evidence supporting each fix.
+   864→   864→
+   865→   865→### ADDED
+   866→   866→
+   867→   867→List new capabilities and integration components.
+   868→   868→
+   869→   869→### PRESERVED
+   870→   870→
+   871→   871→List existing systems that remain intact.
+   872→   872→
+   873→   873→### SHIMEJI INTEGRATION
+   874→   874→
+   875→   875→Explain which concepts or code were reused, adapted, or rejected, including licensing and attribution.
+   876→   876→
+   877→   877→### CHARACTER AND ASSET STATUS
+   878→   878→
+   879→   879→List the verified character packs, supported animations, missing mappings, and unresolved asset issues.
+   880→   880→
+   881→   881→### TEST RESULTS
+   882→   882→
+   883→   883→Give the actual command, pass count, failure count, skipped tests, and relevant output.
+   884→   884→
+   885→   885→### BUILD RESULTS
+   886→   886→
+   887→   887→Distinguish browser builds from native Windows builds.
+   888→   888→
+   889→   889→### VISUAL VERIFICATION
+   890→   890→
+   891→   891→Describe which interfaces and animations were actually inspected in a running application.
+   892→   892→
+   893→   893→### NOT VERIFIED
+   894→   894→
+   895→   895→List everything that could not be tested in the available environment.
+   896→   896→
+   897→   897→### KNOWN LIMITATIONS
+   898→   898→
+   899→   899→Describe remaining defects and constraints.
+   900→   900→
+   901→   901→### DOWNLOAD AND SETUP
+   902→   902→
+   903→   903→Provide the exact ZIP link and practical launch instructions.
+   904→   904→
+   905→   905→Do not present planned features as implemented features.
+   906→   906→
+   907→   907→Do not claim that a native Windows overlay works unless the relevant native behavior has actually been verified.
+   908→   908→
+   909→   909→Do not invent test results, screenshots, build logs, or files.
+   910→   910→
+   911→   911→---
+   912→   912→
+   913→   913→# 19. ABSOLUTE DEVELOPMENT RULES
+   914→   914→
+   915→   915→1. **Preserve the latest NEXUS source as the baseline.**
+   916→   916→2. Inspect before modifying.
+   917→   917→3. Fix root causes rather than suppressing errors.
+   918→   918→4. Do not create a separate replacement application.
+   919→   919→5. Do not discard valid character assets.
+   920→   920→6. Do not replace the NEXUS engine with the original Shimeji runtime.
+   921→   921→7. Do not create duplicate competing physics or animation engines.
+   922→   922→8. Do not hardcode individual characters into unrelated subsystems.
+   923→   923→9. Do not remove functioning features without a documented technical reason.
+   924→   924→10. Do not sacrifice existing compatibility for cosmetic improvements.
+   925→   925→11. Do not claim that an untested feature works.
+   926→   926→12. Do not hide incomplete functionality behind polished UI.
+   927→   927→13. Do not leave the project without its root `index.html`.
+   928→   928→14. Do not leave the native build dependent on the development server.
+   929→   929→15. Do not expose secrets in source code or the final ZIP.
+   930→   930→16. Do not break the existing browser demo while fixing native packaging.
+   931→   931→17. Do not make destructive asset conversions.
+   932→   932→18. Do not ignore the supplied Shimeji source.
+   933→   933→19. Do not blindly import incompatible source code.
+   934→   934→20. Do not stop after producing the audit or a plan if implementation is possible.
+   935→   935→
+   936→   936→If a requirement cannot be completed, finish the parts that can be implemented, document the limitation, and leave the project in a reproducible state.
+   937→   937→
+   938→   938→---
+   939→   939→
+   940→   940→# 20. FINAL PRODUCT OBJECTIVE
+   941→   941→
+   942→   942→The final NEXUS experience should combine:
+   943→   943→
+   944→   944→- The familiar desktop-pet behavior that makes Shimeji enjoyable.
+   945→   945→- The richer action and behavior architecture already present in NEXUS.
+   946→   946→- Reliable animation and physics.
+   947→   947→- Six established character packs.
+   948→   948→- Character-specific actions and effects.
+   949→   949→- Autonomous personality-driven behavior.
+   950→   950→- Multiple active companions.
+   951→   951→- A connected Phone and control interface.
+   952→   952→- Original-character support.
+   953→   953→- A real native Windows desktop experience.
+   954→   954→- A maintainable, testable, extensible codebase.
+   955→   955→
+   956→   956→The application should be charming, responsive, and genuinely useful without becoming distracting or unstable.
+   957→   957→
+   958→   958→The objective is not to maximize the number of features advertised.
+   959→   959→
+   960→   960→The objective is to make the existing features work together as one coherent system.
+   961→   961→
+   962→   962→**Start with the actual `dabi-upload-shimeji-brain` project and the supplied Shimeji source ZIP. Audit both, preserve what works, implement the highest-priority fixes, integrate the compatible capabilities, test the results, and deliver the complete improved NEXUS Companions project as a downloadable ZIP.**
+   963→   963→
+   964→   964→Do the engineering work. Verify the result. Report the truth.
+   965→   965→
+   966→   966→**END OF MASTER BUILD PROMPT**

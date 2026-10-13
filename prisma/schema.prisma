@@ -1,0 +1,54 @@
+// NEXUS Companions — Prisma schema.
+// SQLite is used for persistence of custom characters and the shared pet repository.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model CustomCharacter {
+  id          String   @id @default(cuid())
+  name        String
+  description String   @default("")
+  universe    String   @default("Custom")
+  spriteBase  String
+  spriteSize  String   @default("96,128")
+  frameFormat String   @default("short")
+  accent      String   @default("#f472b6")
+  emoji       String   @default("✨")
+  personality String   @default("{}") // JSON
+  animations  String   @default("{}") // JSON
+  stateMap    String   @default("{}") // JSON
+  tags        String   @default("[]") // JSON array of strings
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([createdAt])
+}
+
+model RepositoryPet {
+  id          String   @id @default(cuid())
+  name        String
+  author      String
+  description String   @default("")
+  universe    String   @default("Community")
+  spriteBase  String
+  spriteSize  String   @default("96,128")
+  frameFormat String   @default("short")
+  accent      String   @default("#f472b6")
+  emoji       String   @default("✨")
+  personality String   @default("{}") // JSON
+  animations  String   @default("{}") // JSON
+  stateMap    String   @default("{}") // JSON
+  tags        String   @default("[]") // JSON array
+  downloads   Int      @default(0)
+  rating      Float    @default(4.5)
+  createdAt   DateTime @default(now())
+
+  @@index([downloads])
+  @@index([rating])
+}

@@ -1,0 +1,56 @@
+{
+  "id": "dabi",
+  "name": "Dabi",
+  "version": "2.1.0-atlas-extracted",
+  "type": "generated-character-pack",
+  "visualStyle": "detailed anime chibi/game sprite atlas",
+  "spriteSize": [
+    192,
+    192
+  ],
+  "animations": [
+    "idle",
+    "blink",
+    "walk",
+    "run",
+    "jump",
+    "fall",
+    "land",
+    "sit",
+    "sleep",
+    "wake",
+    "dance",
+    "wave",
+    "talk",
+    "think",
+    "surprised",
+    "happy",
+    "attack",
+    "defend",
+    "blue_flame",
+    "hurt"
+  ],
+  "assetRoot": "assets/characters/dabi/",
+  "uniqueSourceFrames": 279,
+  "expandedTimelineFrames": 2400,
+  "processing": [
+    "panel-aware grid extraction",
+    "border-connected background removal",
+    "contrast enhancement",
+    "Lanczos enlargement",
+    "UnsharpMask sharpening",
+    "normalized transparent 192x192 canvas",
+    "timed runtime expansion without inventing source art",
+    "discarded mismatched ability panels rather than assigning non-Dabi abilities"
+  ],
+  "licenseNote": "Fan-art style generated/constructed project assets; verify third-party character licensing before redistribution.",
+  "discardedAtlasSections": [
+    "genjutsu",
+    "amaterasu",
+    "tsukuyomi",
+    "summon",
+    "crows",
+    "revive",
+    "death"
+  ]
+}

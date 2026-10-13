@@ -1,0 +1,31 @@
+{
+  "id": "kuro",
+  "name": "Kuro",
+  "version": "1.0.0",
+  "type": "generated-character-pack",
+  "visualStyle": "original NEXUS chibi anime fan-art / original mascot art",
+  "spriteSize": [
+    96,
+    128
+  ],
+  "animations": [
+    "idle",
+    "blink",
+    "walk",
+    "run",
+    "jump",
+    "fall",
+    "land",
+    "sit",
+    "sleep",
+    "wake",
+    "dance",
+    "wave",
+    "talk",
+    "think",
+    "surprised",
+    "happy"
+  ],
+  "assetRoot": "assets/characters/kuro/",
+  "licenseNote": "Original generated/constructed NEXUS assets for this project; verify third-party character licensing before redistribution."
+}
